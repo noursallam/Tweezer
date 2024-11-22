@@ -25,5 +25,5 @@ print(f"""
                                                                                                                                                                            
 
       
-                                                                  Made by : Nour Sallam (Egyption muslim)
+                                                                  Copyright (c) 2024, Nour Sallam. All rights reserved.
       """)
