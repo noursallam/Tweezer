@@ -1,0 +1,189 @@
+# Copyright (c) 2024, Nour Sallam. All rights reserved.
+# Welcome to tweezr tool
+
+# -------------------------
+# General Data
+# -------------------------
+-e      # Emails
+admin@company.com
+john.doe@example.org
+user123@domain.co
+contact@companyxyz.com
+support@website.com
+
+-p      # Passwords
+$2y$10$eWv1t8Jl.pQZfWB92pX5P0lTk0l31qrmv1TjM3fHhJgX3LX7M0Rz2
+SecureP@ss123
+admin1234
+qwerty!@#
+password2024
+-tin    # Tax Identification Numbers (TIN)
+TIN: 234-56-7890
+TIN: 987-65-4321
+
+-ip     # IP Addresses
+192.168.1.1
+10.0.0.15
+203.0.113.1
+198.51.100.2
+
+# -------------------------
+# Personal Identifiable Information (PII)
+# -------------------------
+-e      # Email Addresses
+admin@domain.com
+employee@corp.org
+info@service.net
+
+-ph     # Phone Numbers
++1 555-1234
++44 1234 567890
++20 1012345678
+
+-ssn    # Social Security Numbers (SSN)
+123-45-6789
+987-65-4321
+
+-cc     # Credit Card Numbers
+4111 1111 1111 1111
+5555 4444 3333 2222
+
+-ba     # Bank Account Information
+Bank: ABC Bank
+Account No: 0123456789
+Sort Code: 12-34-56
+
+-addr   # Home Addresses
+123 Main St, Hometown, CA 90001
+456 Oak Dr, Springfield, IL 62701
+
+-dob    # Date of Birth (DOB)
+1985-05-12
+1990-07-23
+1975-11-05
+
+-g      # Gender
+Male
+Female
+
+-pass   # Passport Numbers
+A12345678
+B98765432
+
+-dl     # Driver's License Numbers
+D1234567
+DL9876543
+
+-med    # Health Information
+Patient ID: 100001
+Prescribed Medication: MedX
+Allergy: Penicillin
+
+# -------------------------
+# Server Info (IPs, configs, logs, etc.)
+# -------------------------
+-ip     # IP Addresses
+10.1.1.100
+192.168.0.50
+
+-cfg    # Server Configurations
+/etc/apache2/sites-available/000-default.conf
+ServerAdmin webmaster@localhost
+DocumentRoot /var/www/html
+<Directory /var/www/html>
+    AllowOverride All
+</Directory>
+
+-log    # Server Logs
+/var/log/apache2/access.log
+192.168.1.1 - - [02/Dec/2024:12:30:25 +0000] "POST /api/v1/login HTTP/1.1" 200 1024
+/var/log/auth.log
+Jan 10 15:20:01 server1 sshd[3124]: Accepted password for admin from 203.0.113.2 port 22 ssh2
+
+-ssh    # SSH Keys
+-----BEGIN OPENSSH PRIVATE KEY-----
+b3BlbnNzaC1rZXktdjEAAAAGbm9uZQA...
+-----END OPENSSH PRIVATE KEY-----
+
+-fw     # Firewall Rules
+iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+
+-ports  # Port Information
+22: Open
+80: Open
+443: Open
+
+-dbcfg  # Database Configurations
+/etc/mysql/my.cnf
+[mysqld]
+datadir=/var/lib/mysql
+socket=/var/lib/mysql/mysql.sock
+
+-sysinfo# System Information (OS, kernel, etc.)
+OS: Ubuntu 20.04.5 LTS
+Kernel: 5.4.0-91-generic
+
+-backup # Backup Files
+/home/user/backups/db_backup_2024.tar.gz
+/home/admin/.aws/backup/production_backup.zip
+
+-svc    # Service Credentials
+Database User: dbadmin
+Password: DbP@ssW0rd
+
+# -------------------------
+# Database Data (credentials, dumps, etc.)
+# -------------------------
+-dbcred # Database Credentials
+db_user=admin
+db_password=SecureP@ss2024
+
+-dbdump # Database Dumps
+-- MySQL dump 10.13  Distrib 5.7.31, for Linux (x86_64)
+--
+-- Dump of table users
+--
+INSERT INTO users (id, username, password) VALUES (1, 'admin', 'adminP@ss');
+INSERT INTO users (id, username, password) VALUES (2, 'jane_doe', 'qwerty123');
+
+-dbcfg  # Database Configuration Files
+/etc/mysql/mysql.conf.d/mysqld.cnf
+
+-dblog  # Database Queries/Logs
+SELECT * FROM users WHERE username='admin';
+
+-dbtable# Table Data
+Table: users
+ID | Username  | Password
+1  | admin     | adminP@ss
+2  | jane_doe  | qwerty123
+
+-dbapi  # API Keys in Databases
+API_KEY=sk_test_4eC39HqLyjWDarjtT1zdp7dc
+
+-dbproc # Stored Procedures
+CREATE PROCEDURE get_user_info(IN user_id INT)
+BEGIN
+    SELECT * FROM users WHERE id = user_id;
+END
+
+-dbrole # User Roles and Permissions
+User: admin
+Role: SUPERUSER
+Permissions: SELECT, INSERT, UPDATE, DELETE
+
+# -------------------------
+# Sensitive Files
+# -------------------------
+-f      # Sensitive Files (backups, archives, etc.)
+/home/user/sensitive_data/backup.tar.gz
+/var/www/html/.htaccess
+
+# -------------------------
+# Web App Data
+# -------------------------
+-web    # Web App Data (sessions, cookies, admin portals, etc.)
+Session ID: 7b1fbbce-33e1-49b4-9f65-b5e073b1f1e3
+Cookie: auth_token=xyz123456
+Admin Portal URL: http://192.168.1.1/admin
