@@ -63,5 +63,20 @@ The **Sensitive Information Extractor** is a powerful Python utility designed to
 ## 🚀 Installation
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/yourusername/sensitive-info-extractor.git
-   cd sensitive-info-extractor
+   git clone https://github.com/noursallam/Tweezer.git
+   cd Tweezer/tool
+   
+
+2. **get prim**:
+   ```bash
+   sudo chmod +x setup/sh
+   ./setup.sh
+   
+
+- no you can run the tool:
+  ```bash
+  python twz.py  [filename] -k  [option]
+
+- to make it easy and accecable:
+  ```bash
+  alaice twz='path to /Tweezer/tool/twz.py'
