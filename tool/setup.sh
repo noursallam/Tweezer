@@ -32,9 +32,9 @@ echo "alias tweezer='python $CURRENT_DIR/twz.py'" >> "$SHELL_CONFIG"
 source "$SHELL_CONFIG"
 
 # Ensure the Python files are executable
-chmod +x "$CURRENT_DIR/twz.py"
-chmod +x "$CURRENT_DIR/demo.py"
-chmod +x "$CURRENT_DIR/flag.py"
+sudo chmod +x "$CURRENT_DIR/twz.py"
+sudo chmod +x "$CURRENT_DIR/demo.py"
+sudo chmod +x "$CURRENT_DIR/flag.py"
 
 # Inform the user to reload their shell or restart terminal
 echo "Setup complete! To use the tool, either restart the terminal or run 'source ~/.bashrc' or 'source ~/.zshrc'."
