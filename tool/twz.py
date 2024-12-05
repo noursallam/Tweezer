@@ -6,11 +6,13 @@ from typing import Dict, List, Optional
 from datetime import datetime
 from tqdm import tqdm
 from flag import FlagPrint
+import sys
+
 
 class SensitiveExtractor:
     """
-    Simplified sensitive information extraction utility 
-    with easy-to-use pattern matching.
+    Sensitive information extraction utility 
+    with improved error handling and progress tracking.
     """
 
     PATTERNS = {
@@ -62,7 +64,8 @@ class SensitiveExtractor:
         """Configure logging for the extractor."""
         logging.basicConfig(
             level=log_level,
-            format='%(asctime)s - %(levelname)s - %(message)s'
+            format='%(asctime)s - %(levelname)s - %(message)s',
+            stream=sys.stderr
         )
         return logging.getLogger(__name__)
 
@@ -72,7 +75,7 @@ class SensitiveExtractor:
         keys: Optional[List[str]] = None
     ) -> Dict[str, List[str]]:
         """
-        Extract sensitive patterns from content.
+        Extract sensitive patterns from content with progress tracking.
         
         Args:
             content (str): Text content to search
@@ -86,28 +89,44 @@ class SensitiveExtractor:
         # Determine which patterns to search
         search_keys = keys if keys else list(self.PATTERNS.keys())
 
-        for key in search_keys:
-            if key not in self.PATTERNS:
-                self.logger.warning(f"Key '{key}' not found")
-                continue
+        # Create a green progress bar
+        progress_bar = tqdm(
+            search_keys, 
+            desc="Scanning", 
+            bar_format="{l_bar}{bar}",
+            colour='green'
+        )
 
-            pattern = self.PATTERNS[key]
-            matches = re.findall(pattern, content, re.MULTILINE | re.IGNORECASE)
+        for key in progress_bar:
+            try:
+                if key not in self.PATTERNS:
+                    self.logger.warning(f"Key '{key}' not found")
+                    continue
+
+                pattern = self.PATTERNS[key]
+                matches = re.findall(pattern, content, re.MULTILINE | re.IGNORECASE)
+                
+                # Flatten matches if they are tuples
+                if matches and isinstance(matches[0], tuple):
+                    matches = [match[0] for match in matches]
+                
+                # Remove duplicates while preserving order
+                matches = list(dict.fromkeys(matches))
+                
+                if matches:
+                    self.results[key] = matches
+                
+                # Update progress bar description
+                progress_bar.set_description(f"Scanning: {key}")
+
+            except Exception as e:
+                self.logger.error(f"Error processing key {key}: {e}")
+                continue
             
-            # Flatten matches if they are tuples
-            if matches and isinstance(matches[0], tuple):
-                matches = [match[0] for match in matches]
-            
-            # Remove duplicates while preserving order
-            matches = list(dict.fromkeys(matches))
-            
-            if matches:
-                self.results[key] = matches
+        # Close the progress bar
+        progress_bar.close()
 
         return self.results
-
-
-    
 
     def save(
         self, 
@@ -129,7 +148,11 @@ class SensitiveExtractor:
             return None
 
         # Ensure output directory exists
-        os.makedirs(output_dir, exist_ok=True)
+        try:
+            os.makedirs(output_dir, exist_ok=True)
+        except Exception as e:
+            self.logger.error(f"Error creating output directory: {e}")
+            return None
 
         # Generate timestamped filename
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -149,10 +172,10 @@ class SensitiveExtractor:
         except Exception as e:
             self.logger.error(f"Error saving results: {e}")
             return None
+        
 
 def main():
     import argparse
-
     parser = argparse.ArgumentParser(description="Sensitive Information Extractor")
     parser.add_argument("filename", help="Path to the file to search")
     parser.add_argument(
@@ -171,37 +194,55 @@ def main():
         help="Enable verbose logging"
     )
 
-    args = parser.parse_args()
-
-    # Set up logging level
-    log_level = logging.DEBUG if args.verbose else logging.INFO
-
-    # Create extractor
-    extractor = SensitiveExtractor(log_level)
-
-    # Read file content
     try:
-        with open(args.filename, 'r', encoding='utf-8') as f:
-            content = f.read()
+        args = parser.parse_args()
+
+        # Set up logging level
+        log_level = logging.DEBUG if args.verbose else logging.INFO
+
+        # Create extractor
+        extractor = SensitiveExtractor(log_level)
+
+        # Read file content
+        try:
+            with open(args.filename, 'r', encoding='utf-8') as f:
+                content = f.read()
+        except FileNotFoundError:
+            print(f"Error: File '{args.filename}' not found.")
+            sys.exit(1)
+        except PermissionError:
+            print(f"Error: No permission to read file '{args.filename}'.")
+            sys.exit(1)
+        except Exception as e:
+            print(f"Unexpected error reading file: {e}")
+            sys.exit(1)
+
+        # Extract patterns
+        results = extractor.extract(content, args.keys)
+
+        # Display and save results
+        if results:
+            print("\n--- Sensitive Information Found ---")
+            for key, matches in results.items():
+                print(f"{key.upper()}: {len(matches)} matches")
+            
+            # Save results
+            output_file = extractor.save(
+                filename=os.path.splitext(os.path.basename(args.filename))[0],
+                output_dir=args.output
+            )
+            
+            if output_file:
+                print(f"Detailed results saved to {output_file}")
+        else:
+            print("No sensitive information found.")
+
+    except KeyboardInterrupt:
+        print("\nOperation cancelled by user.")
+        sys.exit(0)
     except Exception as e:
-        print(f"Error reading file: {e}")
-        return
-
-    # Extract patterns
-    results = extractor.extract(content, args.keys)
-
-    # Display and save results
-    if results:
-        print("\n--- Sensitive Information Found ---")
-
-        
-        # Save results
-        extractor.save(
-            filename=os.path.splitext(os.path.basename(args.filename))[0],
-            output_dir=args.output
-        )
-    else:
-        print("No sensitive information found.")
+        print(f"Unexpected error: {e}")
+        sys.exit(1)
 
 if __name__ == "__main__":
     FlagPrint()
