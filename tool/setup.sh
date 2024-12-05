@@ -1,10 +1,6 @@
 #!/bin/bash
 
-# Ensure we're running the script as a normal user, not root
-if [ "$(id -u)" -eq 0 ]; then
-    echo "Please do not run the script as root. Run it as a normal user."
-    exit 1
-fi
+
 
 # Get the current directory (where the script is being run from)
 CURRENT_DIR=$(pwd)
