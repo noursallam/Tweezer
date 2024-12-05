@@ -45,10 +45,7 @@ The **Sensitive Information Extractor** is a powerful Python utility designed to
    python twz.py [filename] -k [option]
    ```
 
-4. **To make it easier and accessible**:
-   ```bash
-   alias twz='path/to/Tweezer/tool/twz.py'
-   ```
+
 
 ---
 
@@ -57,7 +54,7 @@ The **Sensitive Information Extractor** is a powerful Python utility designed to
 To scan a URL for sensitive information:
 
 ```bash
-python twz.py --url https://example.com
+tweezer --url https://example.com
 ```
 
 ---
