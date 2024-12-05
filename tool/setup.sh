@@ -1,52 +1,40 @@
 #!/bin/bash
 
-# Ensure Python and pip are installed
-if ! command -v python3 &>/dev/null; then
-    echo "Python is not installed. Please install Python 3."
+# Ensure we're running the script as a normal user, not root
+if [ "$(id -u)" -eq 0 ]; then
+    echo "Please do not run the script as root. Run it as a normal user."
     exit 1
 fi
 
-if ! command -v pip3 &>/dev/null; then
-    echo "pip is not installed. Please install pip for Python 3."
-    exit 1
-fi
+# Get the current directory (where the script is being run from)
+CURRENT_DIR=$(pwd)
 
-# Define the target directory (local bin)
-TARGET_DIR="$HOME/.local/bin"
+# Install the required Python dependencies
+echo "Installing dependencies from requirements.txt..."
+pip install --user -r "$CURRENT_DIR/requirements.txt"
 
-# Create the target directory if it doesn't exist
-mkdir -p "$TARGET_DIR"
+# Set up the alias in the user's .bashrc or .zshrc file
+USER_HOME=$(eval echo ~$USER)
 
-# Install requirements from the requirements.txt file
-if [ -f "requirements.txt" ]; then
-    echo "Installing dependencies from requirements.txt..."
-    pip3 install --user -r requirements.txt
+if [ -f "$USER_HOME/.bashrc" ]; then
+    SHELL_CONFIG="$USER_HOME/.bashrc"
+elif [ -f "$USER_HOME/.zshrc" ]; then
+    SHELL_CONFIG="$USER_HOME/.zshrc"
 else
-    echo "requirements.txt not found. Please make sure it's in the same directory as this script."
+    echo "No supported shell config file found. Exiting."
     exit 1
 fi
 
-# Move the Python files to the target directory
-for file in *.py; do
-    if [ -f "$file" ]; then
-        mv "$file" "$TARGET_DIR"
-        echo "Moved $(basename "$file") to $TARGET_DIR"
-    fi
-done
+echo "Setting up alias for 'tweezer'..."
+echo "alias tweezer='python $CURRENT_DIR/twz.py'" >> "$SHELL_CONFIG"
 
-# Make the Python scripts executable
-for file in "$TARGET_DIR"/*.py; do
-    chmod +x "$file"
-    echo "Made $(basename "$file") executable"
-done
+# Apply the changes to the current session
+source "$SHELL_CONFIG"
 
-# Create a symlink for easy access (optional)
-SCRIPT_NAME="twz.py"  # The main script that you want to run globally
-if [ -f "$TARGET_DIR/$SCRIPT_NAME" ]; then
-    ln -sf "$TARGET_DIR/$SCRIPT_NAME" "$TARGET_DIR/twz"
-    echo "Created symlink 'twz' to run the tool globally."
-else
-    echo "Main script $SCRIPT_NAME not found."
-fi
+# Ensure the Python files are executable
+chmod +x "$CURRENT_DIR/twz.py"
+chmod +x "$CURRENT_DIR/demo.py"
+chmod +x "$CURRENT_DIR/flag.py"
 
-echo "Setup complete. The tool is now globally accessible."
+# Inform the user to reload their shell or restart terminal
+echo "Setup complete! To use the tool, either restart the terminal or run 'source ~/.bashrc' or 'source ~/.zshrc'."
