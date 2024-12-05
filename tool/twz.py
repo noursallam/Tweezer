@@ -1,13 +1,13 @@
 import re
 import os
+import sys
 import json
 import logging
+import requests
 from typing import Dict, List, Optional
 from datetime import datetime
 from tqdm import tqdm
 from flag import FlagPrint
-import sys
-
 
 class SensitiveExtractor:
     """
@@ -48,7 +48,6 @@ class SensitiveExtractor:
         "btc": r"\b[13][a-km-zA-HJ-NP-Z1-9]{25,34}\b",  # Bitcoin Address
         "eth": r"\b0x[a-fA-F0-9]{40}\b",  # Ethereum Address
     }
-
 
     def __init__(self, log_level: int = logging.INFO):
         """
@@ -172,22 +171,49 @@ class SensitiveExtractor:
         except Exception as e:
             self.logger.error(f"Error saving results: {e}")
             return None
-        
+
+def fetch_url_content(url: str) -> Optional[str]:
+    """
+    Fetch content from a given URL.
+    
+    Args:
+        url (str): URL to fetch content from
+    
+    Returns:
+        Optional[str]: Content of the URL or None if fetch fails
+    """
+    try:
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()  # Raise an exception for bad status codes
+        return response.text
+    except requests.RequestException as e:
+        print(f"Error fetching URL: {e}")
+        return None
 
 def main():
     import argparse
     parser = argparse.ArgumentParser(description="Sensitive Information Extractor")
-    parser.add_argument("filename", help="Path to the file to search")
+    
+    # Create input source group
+    parser.add_argument("filename", nargs='?', help="Path to the file to search")
+    
+    parser.add_argument(
+        "-y", "--url", 
+        help="URL to extract sensitive information from"
+    )
+    
     parser.add_argument(
         "-k", "--keys", 
         nargs='+', 
         help="Specific keys to extract (e.g., e ph cc ip)"
     )
+    
     parser.add_argument(
         "-o", "--output", 
         default='.', 
         help="Output directory for results"
     )
+    
     parser.add_argument(
         "-v", "--verbose", 
         action="store_true", 
@@ -197,25 +223,43 @@ def main():
     try:
         args = parser.parse_args()
 
+        # Validate input
+        if not args.filename and not args.url:
+            print("Error: Please provide either a filename or a URL.")
+            sys.exit(1)
+        
+        if args.filename and args.url:
+            print("Error: Please provide either a filename or a URL, not both.")
+            sys.exit(1)
+
         # Set up logging level
         log_level = logging.DEBUG if args.verbose else logging.INFO
 
         # Create extractor
         extractor = SensitiveExtractor(log_level)
 
-        # Read file content
-        try:
-            with open(args.filename, 'r', encoding='utf-8') as f:
-                content = f.read()
-        except FileNotFoundError:
-            print(f"Error: File '{args.filename}' not found.")
-            sys.exit(1)
-        except PermissionError:
-            print(f"Error: No permission to read file '{args.filename}'.")
-            sys.exit(1)
-        except Exception as e:
-            print(f"Unexpected error reading file: {e}")
-            sys.exit(1)
+        # Determine content source
+        if args.filename:
+            # Read file content
+            try:
+                with open(args.filename, 'r', encoding='utf-8') as f:
+                    content = f.read()
+            except FileNotFoundError:
+                print(f"Error: File '{args.filename}' not found.")
+                sys.exit(1)
+            except PermissionError:
+                print(f"Error: No permission to read file '{args.filename}'.")
+                sys.exit(1)
+            except Exception as e:
+                print(f"Unexpected error reading file: {e}")
+                sys.exit(1)
+        
+        elif args.url:
+            # Fetch content from URL
+            content = fetch_url_content(args.url)
+            if not content:
+                print("Failed to retrieve content from URL.")
+                sys.exit(1)
 
         # Extract patterns
         results = extractor.extract(content, args.keys)
@@ -227,8 +271,9 @@ def main():
                 print(f"{key.upper()}: {len(matches)} matches")
             
             # Save results
+            output_filename = args.filename or "url_content"
             output_file = extractor.save(
-                filename=os.path.splitext(os.path.basename(args.filename))[0],
+                filename=os.path.splitext(os.path.basename(output_filename))[0],
                 output_dir=args.output
             )
             
