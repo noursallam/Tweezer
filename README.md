@@ -47,6 +47,11 @@ The **Sensitive Information Extractor** is a powerful Python utility designed to
   ```bash
   alaice twz='path to /Tweezer/tool/twz.py'
 
+  To scan a URL for sensitive information:
+
+```bash
+ twz.py --url https://example.com
+
 
 The **Sensitive Information Extractor** uses regular expressions to detect sensitive information across various document types. Below is a table explaining each pattern used for detection:
 
