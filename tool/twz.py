@@ -1,106 +1,207 @@
 import re
-import argparse
 import os
+import json
+import logging
+from typing import Dict, List, Optional
 from datetime import datetime
 from tqdm import tqdm
-import time
 from flag import FlagPrint
 
+class SensitiveExtractor:
+    """
+    Simplified sensitive information extraction utility 
+    with easy-to-use pattern matching.
+    """
 
-# Config file containing regex patterns
-REGEX_PATTERNS = {
-    "-e": r"([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})",  # Email addresses
-    "-p": r"password\s*[:=]\s*([^\s]+)",  # Passwords
-    "-ip": r"\b(?:\d{1,3}\.){3}\d{1,3}\b",  # IP addresses
-    "-cfg": r"config\s*[:=]\s*([^\s]+)",  # Server configurations
-    "-log": r"\b(?:log|error|server)\b[\w\s]+",  # Server logs
-    "-ssh": r"ssh-(rsa|dss|ecdsa|ed25519) [A-Za-z0-9+/=]+",  # SSH keys
-    "-dbcfg": r"db\s*config\s*[:=]\s*([^\s]+)",  # Database configuration
-    "-sysinfo": r"\b(?:OS|system|kernel)\b[\w\s]+",  # System information
-    "-svc": r"\b(?:username|password|credential)\b[\w\s]+",  # Service credentials
-    "-dbcred": r"db\s*credential\s*[:=]\s*([^\s]+)",  # Database credentials
-    "-dblog": r"\b(?:select|insert|update|delete)\b[\w\s]+",  # Database logs
-    "-dbapi": r"api_key\s*[:=]\s*([A-Za-z0-9]{32})",  # API keys in databases
-    "-web": r"\b(?:session|cookie|token|portal)\b[\w\s]+",  # Web app data
-}
+    PATTERNS = {
+        # Personal Info
+        "e": r"([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})",  # Email
+        "ssn": r"\b\d{3}-\d{2}-\d{4}\b",  # Social Security Number
+        "ph": r"\b(?:\+\d{1,2}\s?)?(\(?\d{3}\)?[\s.-]?)?\d{3}[\s.-]?\d{4}\b",  # Phone
+        "pp": r"\b[A-Z]{1,2}\d{6,9}\b",  # Passport
+        "dl": r"\b[A-Z]{1,2}\d{4,9}\b",  # Driver's License
+
+        # Credentials
+        "pw": r"(?:password|pwd)\s*[:=]\s*([^\s]{8,})",  # Password
+        "ak": r"(?:api_key|apikey)\s*[:=]\s*([A-Za-z0-9_\-]{32,})",  # API Key
+        "ssh": r"-----BEGIN (RSA|DSA|ECDSA|ED25519) PRIVATE KEY-----[\s\S]*?-----END (RSA|DSA|ECDSA|ED25519) PRIVATE KEY-----",  # SSH Key
+        "jwt": r"eyJ[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+",  # JWT Token
+
+        # Financial
+        "cc": r"\b(?:4\d{3}|5[1-5]\d{2}|6011|3[47]\d{2})\s?\d{4}\s?\d{4}\s?\d{4}\b",  # Credit Card
+        "ba": r"\b\d{9,18}\b",  # Bank Account
+        "rn": r"\b(?:0[0-9]|1[0-2]|2[1-9]|3[0-2]|6[1-9]|7[0-2]|8[0-8])\d{7}\b",  # Routing Number
+
+        # Network
+        "ip": r"\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b",  # IP Address
+        "mac": r"\b([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})\b",  # MAC Address
+        "url": r"https?://(?:[-\w.]|(?:%[\da-fA-F]{2}))+",  # URL
+        "dom": r"\b(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]\b",  # Domain
+
+        # Corporate
+        "eid": r"\b(?:EMP|STAFF)\d{4,6}\b",  # Employee ID
+        "tax": r"\b\d{2}-\d{7}\b",  # Tax ID
+
+        # Crypto
+        "btc": r"\b[13][a-km-zA-HJ-NP-Z1-9]{25,34}\b",  # Bitcoin Address
+        "eth": r"\b0x[a-fA-F0-9]{40}\b",  # Ethereum Address
+    }
 
 
-# Function to display loader
-def green_loader(task_description="Processing..."):
-    print(f"\033[92m{task_description}\033[0m")  # Green text
-    for _ in tqdm(range(50), desc="Loading", bar_format="\033[92m{l_bar}{bar}\033[0m"):
-        time.sleep(0.05)
+    def __init__(self, log_level: int = logging.INFO):
+        """
+        Initialize the Sensitive Extractor.
+        
+        Args:
+            log_level (int): Logging level for the extractor
+        """
+        self.logger = self._setup_logging(log_level)
+        self.results: Dict[str, List[str]] = {}
 
-# Function to extract data based on pattern
-def extract_data(pattern, content):
-    matches = re.findall(pattern, content)
-    return [match[0] if isinstance(match, tuple) else match for match in matches]
+    def _setup_logging(self, log_level: int) -> logging.Logger:
+        """Configure logging for the extractor."""
+        logging.basicConfig(
+            level=log_level,
+            format='%(asctime)s - %(levelname)s - %(message)s'
+        )
+        return logging.getLogger(__name__)
 
-# Function to read file content
-def read_file(filename):
-    if os.path.exists(filename):
-        try:
-            with open(filename, 'r', encoding='utf-8') as file:
-                return file.read()
-        except UnicodeDecodeError:
-            print("\033[91mError: File contains unsupported characters for UTF-8 encoding.\033[0m")
+    def extract(
+        self, 
+        content: str, 
+        keys: Optional[List[str]] = None
+    ) -> Dict[str, List[str]]:
+        """
+        Extract sensitive patterns from content.
+        
+        Args:
+            content (str): Text content to search
+            keys (List[str], optional): Specific keys to extract
+        
+        Returns:
+            Dict[str, List[str]]: Extracted sensitive information
+        """
+        self.results = {}
+        
+        # Determine which patterns to search
+        search_keys = keys if keys else list(self.PATTERNS.keys())
+
+        for key in search_keys:
+            if key not in self.PATTERNS:
+                self.logger.warning(f"Key '{key}' not found")
+                continue
+
+            pattern = self.PATTERNS[key]
+            matches = re.findall(pattern, content, re.MULTILINE | re.IGNORECASE)
+            
+            # Flatten matches if they are tuples
+            if matches and isinstance(matches[0], tuple):
+                matches = [match[0] for match in matches]
+            
+            # Remove duplicates while preserving order
+            matches = list(dict.fromkeys(matches))
+            
+            if matches:
+                self.results[key] = matches
+
+        return self.results
+
+
+    
+
+    def save(
+        self, 
+        filename: Optional[str] = None, 
+        output_dir: str = '.'
+    ) -> Optional[str]:
+        """
+        Save extraction results to a JSON file.
+        
+        Args:
+            filename (str, optional): Base filename for output
+            output_dir (str, optional): Directory to save results
+        
+        Returns:
+            Optional[str]: Path to saved results file
+        """
+        if not self.results:
+            self.logger.warning("No sensitive data to save")
             return None
-    else:
-        print(f"\033[91mError: File '{filename}' not found.\033[0m")
-        return None
 
-# Function to save results to file
-def save_results(filename, results):
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    output_file = f"{os.path.splitext(filename)[0]}_results_{timestamp}.txt"
-    try:
-        with open(output_file, 'w') as file:
-            for option, matches in results.items():
-                file.write(f"Option: {option}\n")
-                file.write("\n".join(matches) + "\n\n")
-        print(f"\033[92mResults saved to {output_file}\033[0m")
-    except Exception as e:
-        print(f"\033[91mError saving results: {e}\033[0m")
+        # Ensure output directory exists
+        os.makedirs(output_dir, exist_ok=True)
 
-# Main CLI logic
+        # Generate timestamped filename
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        base_name = filename or "sensitive_data"
+        output_filename = os.path.join(
+            output_dir, 
+            f"{base_name}_sensitive_{timestamp}.json"
+        )
+
+        try:
+            with open(output_filename, 'w', encoding='utf-8') as f:
+                json.dump(self.results, f, indent=2)
+            
+            self.logger.info(f"Results saved to {output_filename}")
+            return output_filename
+        
+        except Exception as e:
+            self.logger.error(f"Error saving results: {e}")
+            return None
+
 def main():
-    parser = argparse.ArgumentParser(description="Extract sensitive data from files based on patterns.")
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Sensitive Information Extractor")
+    parser.add_argument("filename", help="Path to the file to search")
     parser.add_argument(
-        "option",
-        type=str,
-        help="The search option (e.g., -e, -p, etc.). Use 'all' for all options."
+        "-k", "--keys", 
+        nargs='+', 
+        help="Specific keys to extract (e.g., e ph cc ip)"
     )
-    parser.add_argument("filename", type=str, help="The file to search in.")
+    parser.add_argument(
+        "-o", "--output", 
+        default='.', 
+        help="Output directory for results"
+    )
+    parser.add_argument(
+        "-v", "--verbose", 
+        action="store_true", 
+        help="Enable verbose logging"
+    )
+
     args = parser.parse_args()
 
-    green_loader("Initializing...")
+    # Set up logging level
+    log_level = logging.DEBUG if args.verbose else logging.INFO
 
-    content = read_file(args.filename)
-    if not content:
+    # Create extractor
+    extractor = SensitiveExtractor(log_level)
+
+    # Read file content
+    try:
+        with open(args.filename, 'r', encoding='utf-8') as f:
+            content = f.read()
+    except Exception as e:
+        print(f"Error reading file: {e}")
         return
 
-    results = {}
-    if args.option == "all":
-        for option, pattern in REGEX_PATTERNS.items():
-            matches = extract_data(pattern, content)
-            if matches:
-                results[option] = matches
-    elif args.option in REGEX_PATTERNS:
-        pattern = REGEX_PATTERNS[args.option]
-        # Using 'grep' command to filter the pattern in the file content
-        command = f"cat {args.filename} | grep -oP '{pattern}'"
-        matches = os.popen(command).readlines()  # Execute the grep command
-        matches = [match.strip() for match in matches]  # Clean the matches
-        if matches:
-            results[args.option] = matches
-    else:
-        print(f"\033[91mInvalid option: {args.option}\033[0m")
-        return
+    # Extract patterns
+    results = extractor.extract(content, args.keys)
 
+    # Display and save results
     if results:
-        save_results(args.filename, results)
+        print("\n--- Sensitive Information Found ---")
+
+        
+        # Save results
+        extractor.save(
+            filename=os.path.splitext(os.path.basename(args.filename))[0],
+            output_dir=args.output
+        )
     else:
-        print("\033[91mNo matches found.\033[0m")
+        print("No sensitive information found.")
 
 if __name__ == "__main__":
     FlagPrint()
