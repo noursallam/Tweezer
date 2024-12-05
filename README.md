@@ -1,3 +1,4 @@
+
 ![Alt Text](tweezer.png)
 <br>
 Copyright (c) 2024, Nour Sallam. All rights reserved.
@@ -16,7 +17,7 @@ The **Sensitive Information Extractor** is a powerful Python utility designed to
 - **JSON Output**: Save extraction results in a clean, structured format.
 - **Progress Tracking**: Green progress bar for real-time scanning feedback.
 
-
+---
 
 ## 📦 Prerequisites
 - **Python 3.8+**
@@ -26,32 +27,42 @@ The **Sensitive Information Extractor** is a powerful Python utility designed to
 ---
 
 ## 🚀 Installation
+
 1. **Clone the repository**:
    ```bash
    git clone https://github.com/noursallam/Tweezer.git
    cd Tweezer/tool
-   
+   ```
 
-2. **get prim**:
+2. **Get Prim**:
    ```bash
    sudo chmod +x setup/sh
    ./setup.sh
-   
+   ```
 
-- no you can run the tool:
-  ```bash
-  python twz.py  [filename] -k  [option]
+3. **Run the tool**:
+   ```bash
+   python twz.py [filename] -k [option]
+   ```
 
+4. **To make it easier and accessible**:
+   ```bash
+   alias twz='path/to/Tweezer/tool/twz.py'
+   ```
 
-- to make it easy and accecable:
-  ```bash
-  alaice twz='path to /Tweezer/tool/twz.py'
+---
 
--To scan a URL for sensitive information:
+## 🚀 Scan a URL for Sensitive Information
+
+To scan a URL for sensitive information:
 
 ```bash
-twz.py --url https://example.com'
+python twz.py --url https://example.com
+```
 
+---
+
+## 📜 Regular Expression Patterns
 
 The **Sensitive Information Extractor** uses regular expressions to detect sensitive information across various document types. Below is a table explaining each pattern used for detection:
 
@@ -80,8 +91,10 @@ The **Sensitive Information Extractor** uses regular expressions to detect sensi
 
 ---
 
+## 📩 Contact
+For any questions or support, please contact:  
+**Email**: noursallam@nspspace.com
 
+Don't buy coffee for me, just pray for Palestine! 🙏
 
-
-for any ask :  noursallam@nspspace.com
-Don't buy coffie to me , pray for palestine !!
+---
