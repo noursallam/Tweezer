@@ -9,6 +9,7 @@ Copyright (c) 2024, Nour Sallam. All rights reserved.
 The **Sensitive Information Extractor** is a powerful Python utility designed to scan and identify potentially sensitive information across various document types. This tool provides a robust, flexible solution for detecting personal, financial, network, and credential-related data patterns.
 
 ---
+# 🚨 **Tweezer Tool just for linux**
 
 ## 🌟 Key Features
 - **Comprehensive Pattern Matching**: Detects over 20 different types of sensitive information.
