@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tweezer - Professional Data Extraction Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0EA5E9',
+                        secondary: '#0F172A',
+                        accent: '#6366F1'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-slate-900 text-slate-200 font-sans">
+    <!-- Sticky Header -->
+    <header
+        class="sticky top-0 z-50 bg-slate-900/95 backdrop-blur supports-[backdrop-filter]:bg-slate-900/75 border-b border-slate-800">
+        <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="flex h-16 items-center justify-between">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold text-primary">🔍 Tweezer</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="flex items-center space-x-8">
+                        <a href="#overview"
+                            class="text-slate-300 hover:text-primary hover:bg-slate-800 px-3 py-2 rounded-md text-sm font-medium transition-all">Overview</a>
+                        <a href="#features"
+                            class="text-slate-300 hover:text-primary hover:bg-slate-800 px-3 py-2 rounded-md text-sm font-medium transition-all">Features</a>
+                        <a href="#installation"
+                            class="text-slate-300 hover:text-primary hover:bg-slate-800 px-3 py-2 rounded-md text-sm font-medium transition-all">Installation</a>
+                        <a href="#usage"
+                            class="text-slate-300 hover:text-primary hover:bg-slate-800 px-3 py-2 rounded-md text-sm font-medium transition-all">Usage</a>
+                        <a href="#patterns"
+                            class="text-slate-300 hover:text-primary hover:bg-slate-800 px-3 py-2 rounded-md text-sm font-medium transition-all">Patterns</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <div class="relative isolate overflow-hidden">
+        <div class="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 lg:py-40">
+            <div class="mx-auto max-w-2xl flex-shrink-0 lg:mx-0 lg:max-w-xl lg:pt-8">
+                <div class="mt-24 sm:mt-32 lg:mt-16">
+                    <a href="#" class="inline-flex space-x-6">
+                        <span
+                            class="rounded-full bg-primary/10 px-3 py-1 text-sm font-semibold leading-6 text-primary ring-1 ring-inset ring-primary/20">Latest
+                            Version</span>
+                        <span class="inline-flex items-center space-x-2 text-sm font-medium text-slate-300">
+                            <span>Just released</span>
+                            <span aria-hidden="true">&rarr;</span>
+                        </span>
+                    </a>
+                </div>
+                <h1 class="mt-10 text-4xl font-bold tracking-tight text-white sm:text-6xl">Sensitive Information
+                    Extraction Tool</h1>
+                <p class="mt-6 text-lg leading-8 text-slate-300">A powerful and professional-grade utility designed for
+                    detecting and analyzing sensitive information across documents and web content.</p>
+                <div class="mt-10 flex items-center gap-x-6">
+                    <a href="#installation"
+                        class="rounded-md bg-primary px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all">Get
+                        Started</a>
+                    <a href="#documentation" class="text-sm font-semibold leading-6 text-white">Documentation <span
+                            aria-hidden="true">→</span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <!-- Overview Section -->
+        <section id="overview" class="py-16">
+            <div class="bg-slate-800/50 rounded-2xl p-8 backdrop-blur-sm border border-slate-700">
+                <h2 class="text-3xl font-bold text-white mb-6">Overview</h2>
+                <p class="text-slate-300 leading-7">Tweezer is a sophisticated Python utility engineered for the precise
+                    identification and extraction of sensitive information across various document formats and web
+                    resources. Our tool combines powerful pattern matching capabilities with an intuitive interface to
+                    provide comprehensive data analysis solutions.</p>
+                <div class="mt-6 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0">
+                            <svg class="h-5 w-5 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-sm font-medium text-yellow-500">Important Notice</h3>
+                            <p class="mt-2 text-sm text-yellow-400/90">Ensure compliance with applicable regulations and
+                                obtain proper authorization before scanning any systems or documents.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="py-16">
+            <h2 class="text-3xl font-bold text-white mb-12">Key Features</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature Card 1 -->
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <div class="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                        <svg class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-white mb-2">Pattern Matching</h3>
+                    <p class="text-slate-300">Advanced algorithms for detecting over 20 types of sensitive information
+                        patterns.</p>
+                </div>
+
+                <!-- Feature Card 2 -->
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <div class="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                        <svg class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-white mb-2">Configurable Scanning</h3>
+                    <p class="text-slate-300">Highly customizable scanning options with support for multiple file types
+                        and URLs.</p>
+                </div>
+
+                <!-- Feature Card 3 -->
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <div class="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                        <svg class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-white mb-2">Real-time Analytics</h3>
+                    <p class="text-slate-300">Monitor scanning progress with detailed analytics and visual feedback.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Installation Section -->
+        <section id="installation" class="py-16">
+            <div class="bg-slate-800/50 rounded-2xl p-8 border border-slate-700">
+                <h2 class="text-3xl font-bold text-white mb-8">Installation</h2>
+                <div class="space-y-6">
+                    <div class="bg-slate-900/50 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold text-white mb-4">Prerequisites</h3>
+                        <ul class="space-y-2 text-slate-300">
+                            <li class="flex items-center">
+                                <svg class="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7" />
+                                </svg>
+                                Python 3.8+
+                            </li>
+                            <li class="flex items-center">
+                                <svg class="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7" />
+                                </svg>
+                                pip (Python package manager)
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-slate-900/50 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold text-white mb-4">Installation Steps</h3>
+                        <div class="bg-slate-950 rounded-lg p-4 font-mono text-sm">
+                            <div
+                                class="flex items-center justify-between text-slate-400 hover:text-slate-300 transition-colors">
+                                <code>git clone https://github.com/noursallam/Tweezer.git</code>
+                                <button class="p-2 hover:bg-slate-800 rounded"
+                                    onclick="navigator.clipboard.writeText('git clone https://github.com/noursallam/Tweezer.git')">
+                                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2                                        <path stroke-linecap="
+                                            round" stroke-linejoin="round" stroke-width="2"
+                                            d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div
+                                class="flex items-center justify-between text-slate-400 hover:text-slate-300 transition-colors mt-2">
+                                <code>cd Tweezer/tool</code>
+                                <button class="p-2 hover:bg-slate-800 rounded"
+                                    onclick="navigator.clipboard.writeText('cd Tweezer/tool')">
+                                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div
+                                class="flex items-center justify-between text-slate-400 hover:text-slate-300 transition-colors mt-2">
+                                <code>sudo chmod +x setup.sh</code>
+                                <button class="p-2 hover:bg-slate-800 rounded"
+                                    onclick="navigator.clipboard.writeText('sudo chmod +x setup.sh')">
+                                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div
+                                class="flex items-center justify-between text-slate-400 hover:text-slate-300 transition-colors mt-2">
+                                <code>./setup.sh</code>
+                                <button class="p-2 hover:bg-slate-800 rounded"
+                                    onclick="navigator.clipboard.writeText('./setup.sh')">
+                                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <p class="text-slate-300 mt-4">The <code>setup.sh</code> script will:</p>
+                        <ul class="list-disc pl-6 text-slate-300">
+                            <li>Install required Python dependencies from <code>requirements.txt</code>.</li>
+                            <li>Set up an alias for <code>tweezer</code> in your shell configuration file
+                                (<code>.bashrc</code> or <code>.zshrc</code>).</li>
+                            <li>Make the Python scripts (<code>twz.py</code>, <code>demo.py</code>,
+                                <code>flag.py</code>) executable.</li>
+                        </ul>
+                        <div class="bg-slate-950 rounded-lg p-4 font-mono text-sm mt-4">
+                            <div
+                                class="flex items-center justify-between text-slate-400 hover:text-slate-300 transition-colors">
+                                <code>source ~/.bashrc  # or source ~/.zshrc</code>
+                                <button class="p-2 hover:bg-slate-800 rounded"
+                                    onclick="navigator.clipboard.writeText('source ~/.bashrc')">
+                                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Usage Section -->
+        <section id="usage" class="py-16">
+            <div class="bg-slate-800/50 rounded-2xl p-8 border border-slate-700">
+                <h2 class="text-3xl font-bold text-white mb-8">Usage</h2>
+                <div class="space-y-6">
+                    <div class="bg-slate-900/50 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold text-white mb-4">File Scanning</h3>
+                        <div class="bg-slate-950 rounded-lg p-4 font-mono text-sm">
+                            <div
+                                class="flex items-center justify-between text-slate-400 hover:text-slate-300 transition-colors">
+                                <code>tweezer [filename] -k [options]</code>
+                                <button class="p-2 hover:bg-slate-800 rounded"
+                                    onclick="navigator.clipboard.writeText('tweezer [filename] -k [options]')">
+                                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900/50 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold text-white mb-4">URL Scanning</h3>
+                        <div class="bg-slate-950 rounded-lg p-4 font-mono text-sm">
+                            <div
+                                class="flex items-center justify-between text-slate-400 hover:text-slate-300 transition-colors">
+                                <code>tweezer -y https://example.com -k [options]</code>
+                                <button class="p-2 hover:bg-slate-800 rounded"
+                                    onclick="navigator.clipboard.writeText('tweezer -y https://example.com -k [options]')">
+                                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Patterns Section -->
+        <section id="patterns" class="py-16">
+            <div class="bg-slate-800/50 rounded-2xl p-8 border border-slate-700">
+                <h2 class="text-3xl font-bold text-white mb-8">Pattern Reference</h2>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-slate-700">
+                        <thead class="bg-slate-900/50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">Category</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">Key</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">Description</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">Example</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-700">
+                            <!-- Personal Information -->
+                            <tr class="hover:bg-slate-800/50 transition-colors">
+                                <td class="px-6 py-4 text-sm text-slate-300">Personal Information</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">e</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">Email Address</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">user@example.com</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/50 transition-colors">
+                                <td class="px-6 py-4 text-sm text-slate-300">Personal Information</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">ssn</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">Social Security Number</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">123-45-6789</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/50 transition-colors">
+                                <td class="px-6 py-4 text-sm text-slate-300">Personal Information</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">ph</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">Phone Number</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">+1 (555) 123-4567</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/50 transition-colors">
+                                <td class="px-6 py-4 text-sm text-slate-300">Personal Information</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">pp</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">Passport Number</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">A12345678</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/50 transition-colors">
+                                <td class="px-6 py-4 text-sm text-slate-300">Personal Information</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">dl</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">Driver's License Number</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">A1234567</td>
+                            </tr>
+        
+                            <!-- Credentials -->
+                            <tr class="hover:bg-slate-800/50 transition-colors">
+                                <td class="px-6 py-4 text-sm text-slate-300">Credentials</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">pw</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">Password</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">password: mypassword123</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/50 transition-colors">
+                                <td class="px-6 py-4 text-sm text-slate-300">Credentials</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">ak</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">API Key</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">apikey=12345678abcdefgh</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/50 transition-colors">
+                                <td class="px-6 py-4 text-sm text-slate-300">Credentials</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">ssh</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">SSH Key</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">-----BEGIN RSA PRIVATE KEY-----</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/50 transition-colors">
+                                <td class="px-6 py-4 text-sm text-slate-300">Credentials</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">jwt</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">JWT Token</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">eyJhbGciOiJIUzI1NiI...</td>
+                            </tr>
+        
+                            <!-- Financial Information -->
+                            <tr class="hover:bg-slate-800/50 transition-colors">
+                                <td class="px-6 py-4 text-sm text-slate-300">Financial Information</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">cc</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">Credit Card Number</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">4111 1111 1111 1111</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/50 transition-colors">
+                                <td class="px-6 py-4 text-sm text-slate-300">Financial Information</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">ba</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">Bank Account Number</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">1234567890123456</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/50 transition-colors">
+                                <td class="px-6 py-4 text-sm text-slate-300">Financial Information</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">rn</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">Routing Number</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">011000015</td>
+                            </tr>
+        
+                            <!-- Network Information -->
+                            <tr class="hover:bg-slate-800/50 transition-colors">
+                                <td class="px-6 py-4 text-sm text-slate-300">Network Information</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">ip</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">IP Address</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">192.168.1.1</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/50 transition-colors">
+                                <td class="px-6 py-4 text-sm text-slate-300">Network Information</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">mac</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">MAC Address</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">00:14:22:01:23:45</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/50 transition-colors">
+                                <td class="px-6 py-4 text-sm text-slate-300">Network Information</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">url</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">URL</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">https://example.com</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/50 transition-colors">
+                                <td class="px-6 py-4 text-sm text-slate-300">Network Information</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">dom</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">Domain Name</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">example.com</td>
+                            </tr>
+        
+                            <!-- Corporate Information -->
+                            <tr class="hover:bg-slate-800/50 transition-colors">
+                                <td class="px-6 py-4 text-sm text-slate-300">Corporate Information</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">eid</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">Employee ID</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">EMP12345</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/50 transition-colors">
+                                <td class="px-6 py-4 text-sm text-slate-300">Corporate Information</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">tax</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">Tax ID</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">12-3456789</td>
+                            </tr>
+        
+                            <!-- Cryptocurrency Information -->
+                            <tr class="hover:bg-slate-800/50 transition-colors">
+                                <td class="px-6 py-4 text-sm text-slate-300">Cryptocurrency Information</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">btc</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">Bitcoin Address</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">1A1zP1eP5QGefi2DMPTfTL...</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/50 transition-colors">
+                                <td class="px-6 py-4 text-sm text-slate-300">Cryptocurrency Information</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">eth</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">Ethereum Address</td>
+                                <td class="px-6 py-4 text-sm text-slate-300">0x32Be343B94f860124dC4...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900/50 border-t border-slate-800">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex items-center justify-between">
+                <span class="text-sm text-slate-400">© 2023 Tweezer. All rights reserved.</span>
+                <a href="https://github.com/noursallam/Tweezer" target="_blank"
+                    class="text-sm text-slate-400 hover:text-primary transition-colors">GitHub Repository</a>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
